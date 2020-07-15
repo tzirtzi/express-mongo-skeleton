@@ -310,6 +310,144 @@
 			"response": []
 		},
 		{
+			"name": "Get Product by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/products/5f0f5e098fce670459acf000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products",
+						"5f0f5e098fce670459acf000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product ",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/products/5f0f5e098fce670459acf000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products",
+						"5f0f5e098fce670459acf000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/orders?fields=_id product quantity",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "fields",
+							"value": "_id product quantity"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/orders/5f0f76e34bb9bd0e054a6ace",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"orders",
+						"5f0f76e34bb9bd0e054a6ace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order for Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\": 2,\r\n    \"productId\": \"5f0f5e098fce670459acf000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/orders/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"orders",
+						""
+					]
+				},
+				"description": "localhost:3000/api/orders\r\n\r\nNOTICE: Only json in body is parsed (express.json())\r\nform-data are ignored with this parser\r\nform data are parsed with formidable!"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Order",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/orders/5f0f76e34bb9bd0e054a6ace",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"orders",
+						"5f0f76e34bb9bd0e054a6ace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create User",
 			"request": {
 				"method": "POST",
@@ -438,6 +576,36 @@
 					"port": "3000",
 					"path": [
 						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product ",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 22,\r\n    \"name\": \"prosfora -2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/products/5f0f5e098fce670459acf000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products",
+						"5f0f5e098fce670459acf000"
 					]
 				}
 			},
