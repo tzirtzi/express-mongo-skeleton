@@ -1,13 +1,17 @@
 const mongoose = require("mongoose");
 
+const Db = require("../data/mongooseData");
 const Product = require("../models/product");
 
 
 async function getProducts(req, res, next) {
 
-    Product.find()
-        .select("name price _id productImage")
-        .exec()
+    const queryCriteria = req.query.queryCriteria ? JSON.parse(req.query.queryCriteria) : null;
+    const selectFields = req.query.fields;
+    const sortCriteria = req.query.sort;
+    const limitResults = req.query.limit ? parseInt(req.query.limit) : null;
+
+    Db.findAllItems(Product, null, selectFields, queryCriteria, sortCriteria, limitResults)
         .then(docs => {
             const response = {
                 count: docs.length,
@@ -19,7 +23,7 @@ async function getProducts(req, res, next) {
                         _id: doc._id,
                         request: {
                             type: "GET",
-                            url: "http://localhost:3000/products/" + doc._id
+                            url: "http://localhost:3000/api/products/" + doc._id
                         }
                     };
                 })
@@ -43,9 +47,9 @@ async function getProducts(req, res, next) {
 
 async function getProduct(req, res, next) {
     const id = req.params.productId;
-    Product.findById(id)
-        .select('name price _id productImage')
-        .exec()
+    const selectFields = req.query.fields;
+
+    Db.findItemById(Product, id, null, selectFields)
         .then(doc => {
             console.log("From database", doc);
             if (doc) {
@@ -53,7 +57,7 @@ async function getProduct(req, res, next) {
                     product: doc,
                     request: {
                         type: 'GET',
-                        url: 'http://localhost:3000/products'
+                        url: 'http://localhost:3000/api/products'
                     }
                 });
             } else {
@@ -77,8 +81,9 @@ async function postProduct(req, res, next) {
         productImage: req.file.productImage.path
     });
 
-    product
-        .save()
+    // product
+    //     .save()
+    Db.createItem(product)
         .then(result => {
             console.log(result);
             res.status(201).json({
@@ -89,7 +94,7 @@ async function postProduct(req, res, next) {
                     _id: result._id,
                     request: {
                         type: 'GET',
-                        url: "http://localhost:3000/products/" + result._id
+                        url: "http://localhost:3000/api/products/" + result._id
                     }
                 }
             });
@@ -105,18 +110,15 @@ async function postProduct(req, res, next) {
 
 async function updateProduct(req, res, next) {
     const id = req.params.productId;
-    const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
-    }
-    Product.update({ _id: id }, { $set: updateOps })
-        .exec()
+    const updatedProps = req.body;
+
+    Db.updateItem(Product, updatedProps, id)
         .then(result => {
             res.status(200).json({
                 message: 'Product updated',
                 request: {
                     type: 'GET',
-                    url: 'http://localhost:3000/products/' + id
+                    url: 'http://localhost:3000/api/products/' + id
                 }
             });
         })
@@ -131,14 +133,13 @@ async function updateProduct(req, res, next) {
 
 async function deleteProduct(req, res, next) {
     const id = req.params.productId;
-    Product.remove({ _id: id })
-        .exec()
+    Db.deleteItem(Product, id)
         .then(result => {
             res.status(200).json({
                 message: 'Product deleted',
                 request: {
                     type: 'POST',
-                    url: 'http://localhost:3000/products',
+                    url: 'http://localhost:3000/api/products',
                     body: { name: 'String', price: 'Number' }
                 }
             });

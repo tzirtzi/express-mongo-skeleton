@@ -1,14 +1,21 @@
 const mongoose = require("mongoose");
 
+const Db = require("../data/mongooseData");
 const Order = require("../models/order");
 const Product = require("../models/product");
 
 
 async function getOrders(req, res, next) {
-  Order.find()
-    .select("product quantity _id")
-    .populate('product', 'name')
-    .exec()
+
+  const queryCriteria = req.query.queryCriteria ? JSON.parse(req.query.queryCriteria) : null;
+  const selectFields = req.query.fields;
+  const sortCriteria = req.query.sort;
+  const limitResults = req.query.limit ? parseInt(req.query.limit) : null;
+
+  Db.findAllItems(Order, 'product', selectFields, queryCriteria, sortCriteria, limitResults)
+    // .select("product quantity _id")
+    // .populate('product', 'name')
+    // .exec()
     .then(docs => {
       res.status(200).json({
         count: docs.length,
@@ -19,7 +26,7 @@ async function getOrders(req, res, next) {
             quantity: doc.quantity,
             request: {
               type: "GET",
-              url: "http://localhost:3000/orders/" + doc._id
+              url: "http://localhost:3000/api/orders/" + doc._id
             }
           };
         })
@@ -34,7 +41,8 @@ async function getOrders(req, res, next) {
 
 
 async function postOrder(req, res, next) {
-  Product.findById(req.body.productId)
+
+  Db.findItemById(Product, req.body.productId, null, null)
     .then(product => {
       if (!product) {
         return res.status(404).json({
@@ -59,7 +67,7 @@ async function postOrder(req, res, next) {
         },
         request: {
           type: "GET",
-          url: "http://localhost:3000/orders/" + result._id
+          url: "http://localhost:3000/api/orders/" + result._id
         }
       });
     })
@@ -74,9 +82,10 @@ async function postOrder(req, res, next) {
 
 async function getOrder(req, res, next) {
 
-  Order.findById(req.params.orderId)
-    .populate('product')
-    .exec()
+  const id = req.params.orderId;
+  const selectFields = req.query.fields;
+
+  Db.findItemById(Order, id, 'product', selectFields)
     .then(order => {
       if (!order) {
         return res.status(404).json({
@@ -87,7 +96,7 @@ async function getOrder(req, res, next) {
         order: order,
         request: {
           type: "GET",
-          url: "http://localhost:3000/orders"
+          url: "http://localhost:3000/api/orders"
         }
       });
     })
@@ -101,14 +110,15 @@ async function getOrder(req, res, next) {
 
 async function deleteOrder(req, res, next) {
 
-  Order.remove({ _id: req.params.orderId })
-    .exec()
+  // Order.remove({ _id: req.params.orderId })
+  //   .exec()
+   Db.deleteItem(Order, req.params.orderId)
     .then(result => {
       res.status(200).json({
         message: "Order deleted",
         request: {
           type: "POST",
-          url: "http://localhost:3000/orders",
+          url: "http://localhost:3000/api/orders",
           body: { productId: "ID", quantity: "Number" }
         }
       });
