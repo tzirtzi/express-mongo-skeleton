@@ -5,11 +5,10 @@ const mongoose = require('mongoose');
 
 // middleware import
 const cors = require('./api/middleware/cors');
-const corsOptions = require('./api/middleware/corsOptions');
 const notFound = require('./api/middleware/notFound');
 const errorHandling = require('./api/middleware/errorHandling');
 
-
+const corsOptions = require('./api/middleware/corsOptions');
 const router = require('./api/routes/routerOutlet');
 
 const app = express();
