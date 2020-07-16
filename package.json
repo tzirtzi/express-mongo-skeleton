@@ -1,8 +1,7 @@
 {
-  "name": "01-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "thunder-rest",
+  "version": "2.0.0",
+  "description": "An opinionated framework for building APIs for React, Vue, Angular or other backends",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon ./bin/www",

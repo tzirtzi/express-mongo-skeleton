@@ -2,44 +2,33 @@ const mongoose = require("mongoose");
 
 const Book = require("../models/book");
 const Db = require("../data/mongooseData")(Book);
+const Controller = require("../controllers/controller.service")(Db);
 
 
-
+// Here is the place to handle any specific overrides 
 async function getBooks(req, res, next) {
 
-    const queryCriteria = req.query.queryCriteria ? JSON.parse(req.query.queryCriteria) : null;
-    const selectFields = req.query.fields;
-    const sortCriteria = req.query.sort;
-    const limitResults = req.query.limit ? parseInt(req.query.limit) : null;
+    Controller.getAll(req, res, next, null);
 
-    Db.findAllItems(null, selectFields, queryCriteria, sortCriteria, limitResults)
-        .then(docs => {
-            res.status(200).json(docs);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
 }
 
 
 async function getBook(req, res, next) {
 
-    const id = req.params.id;
-    const selectFields = req.query.fields;
+    Controller.getById(req, res, next, null);
+    // const id = req.params.id;
+    // const selectFields = req.query.fields;
 
-    Db.findItemById(id, null, selectFields)
-        .then(docs => {
-            res.status(200).json(docs);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
+    // Db.findItemById(id, null, selectFields)
+    //     .then(docs => {
+    //         res.status(200).json(docs);
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //         res.status(500).json({
+    //             error: err
+    //         });
+    //     });
 }
 
 
@@ -53,67 +42,21 @@ async function postBook(req, res, next) {
         read: false
     });
 
-    Db.createItem(book)
-        .then(doc => {
-            console.log(doc);
-            res.status(201).json({
-                message: "Document Created Successfully",
-                created: doc
-            });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
+    req.newItem = book;
+    
+    Controller.postOne(req, res, next);
 }
 
 
 async function updateBook(req, res, next) {
-    const id = req.params.id;
-    const updatedProps = req.body;
 
-    Db.updateItem( updatedProps, id)
-        .then(doc => {
-            if (doc) {
-                res.status(200).json({
-                    message: 'Document updated',
-                    updated: doc
-                });
-            } else {
-                res.status(404).json({ message: "No valid entry found for provided ID" });
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
+    Controller.updateOne(req, res, next);
 }
 
 
 async function deleteBook(req, res, next) {
-    const id = req.params.id;
-
-    Db.deleteItem( id)
-        .then(doc => {
-            if (doc) {
-                res.status(200).json({
-                    message: 'Document deleted',
-                    deleted: doc
-                });
-            } else {
-                res.status(404).json({ message: "No valid entry found for provided ID" });
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
+    
+    Controller.deleteOne(req, res, next);
 }
 
 

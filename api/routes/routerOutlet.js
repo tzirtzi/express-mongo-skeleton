@@ -10,6 +10,8 @@ const productRoutes = require('./product.routes');
 const orderRoutes = require('./order.routes');
 const bookRoutes = require('./book.routes');
 
+
+// Here is the place to handle the routing per Object
 router.use('/api/protected', authGuard, statusRoutes);  // Protected Health endpoint
 router.use('/api', statusRoutes);   // Public Health endpoint
 router.use('/api/upload', uploadRoutes);

@@ -9,13 +9,16 @@ function Db(Model) {
     }
 
 
-    // Update one item : updatedProperties = req.body in the router function
-    async function updateItem( updatedProperties, id) {
+    //transform info to object and save modelProperties = req.body 
+    async function createItemFromProperties(modelProperties) {
+        const modelInstance = new Model(modelProperties)
+        return modelInstance
+            .save()
+    }
 
-        //do not allow updates on _id field!
-        if (updatedProperties["_id"]) {
-            delete updatedProperties["_id"];
-        }
+
+    // Update one item : updatedProperties = req.body 
+    async function updateItem( updatedProperties, id) {
 
         const updateOps = {};
         for (const key in updatedProperties) {
@@ -75,6 +78,7 @@ function Db(Model) {
     // Reveal Pattern
     return {
         createItem,
+        createItemFromProperties,
         updateItem,
         deleteItem,
         findOneItem,
