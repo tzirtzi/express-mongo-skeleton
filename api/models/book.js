@@ -8,4 +8,5 @@ const bookSchema = mongoose.Schema({
     read: { type: Boolean, default: false },
 });
 
+
 module.exports = mongoose.model('Book', bookSchema);
