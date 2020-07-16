@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
-const Db = require("../data/mongooseData");
 const Book = require("../models/book");
+const Db = require("../data/mongooseData")(Book);
+
 
 
 async function getBooks(req, res, next) {
@@ -11,7 +12,7 @@ async function getBooks(req, res, next) {
     const sortCriteria = req.query.sort;
     const limitResults = req.query.limit ? parseInt(req.query.limit) : null;
 
-    Db.findAllItems(Book, null, selectFields, queryCriteria, sortCriteria, limitResults)
+    Db.findAllItems(null, selectFields, queryCriteria, sortCriteria, limitResults)
         .then(docs => {
             res.status(200).json(docs);
         })
@@ -29,7 +30,7 @@ async function getBook(req, res, next) {
     const id = req.params.id;
     const selectFields = req.query.fields;
 
-    Db.findItemById(Book, id, null, selectFields)
+    Db.findItemById(id, null, selectFields)
         .then(docs => {
             res.status(200).json(docs);
         })
@@ -56,7 +57,7 @@ async function postBook(req, res, next) {
         .then(doc => {
             console.log(doc);
             res.status(201).json({
-                message: "Created successfully",
+                message: "Document Created Successfully",
                 created: doc
             });
         })
@@ -73,11 +74,11 @@ async function updateBook(req, res, next) {
     const id = req.params.id;
     const updatedProps = req.body;
 
-    Db.updateItem(Book, updatedProps, id)
+    Db.updateItem( updatedProps, id)
         .then(doc => {
             if (doc) {
                 res.status(200).json({
-                    message: 'Product updated',
+                    message: 'Document updated',
                     updated: doc
                 });
             } else {
@@ -96,11 +97,11 @@ async function updateBook(req, res, next) {
 async function deleteBook(req, res, next) {
     const id = req.params.id;
 
-    Db.deleteItem(Book, id)
+    Db.deleteItem( id)
         .then(doc => {
             if (doc) {
                 res.status(200).json({
-                    message: 'Product deleted',
+                    message: 'Document deleted',
                     deleted: doc
                 });
             } else {

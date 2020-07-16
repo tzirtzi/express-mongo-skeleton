@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 
-const Db = require("../data/mongooseData");
 const Product = require("../models/product");
-
+const Db = require("../data/mongooseData")(Product);
 
 async function getProducts(req, res, next) {
 
@@ -11,7 +10,7 @@ async function getProducts(req, res, next) {
     const sortCriteria = req.query.sort;
     const limitResults = req.query.limit ? parseInt(req.query.limit) : null;
 
-    Db.findAllItems(Product, null, selectFields, queryCriteria, sortCriteria, limitResults)
+    Db.findAllItems(null, selectFields, queryCriteria, sortCriteria, limitResults)
         .then(docs => {
             const response = {
                 count: docs.length,
@@ -49,7 +48,7 @@ async function getProduct(req, res, next) {
     const id = req.params.productId;
     const selectFields = req.query.fields;
 
-    Db.findItemById(Product, id, null, selectFields)
+    Db.findItemById(id, null, selectFields)
         .then(doc => {
             console.log("From database", doc);
             if (doc) {
@@ -108,7 +107,7 @@ async function updateProduct(req, res, next) {
     const id = req.params.productId;
     const updatedProps = req.body;
 
-    Db.updateItem(Product, updatedProps, id)
+    Db.updateItem(updatedProps, id)
         .then(doc => {
             res.status(200).json({
                 message: 'Product updated',
@@ -130,7 +129,7 @@ async function updateProduct(req, res, next) {
 
 async function deleteProduct(req, res, next) {
     const id = req.params.productId;
-    Db.deleteItem(Product, id)
+    Db.deleteItem( id)
         .then(doc => {
             if (doc) { //only if found it was deleted
                 res.status(200).json({

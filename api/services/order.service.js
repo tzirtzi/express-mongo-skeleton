@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
-const Db = require("../data/mongooseData");
+
 const Order = require("../models/order");
 const Product = require("../models/product");
-
+const DbOrder = require("../data/mongooseData")(Order);
+const DbProduct = require("../data/mongooseData")(Product);
 
 async function getOrders(req, res, next) {
 
@@ -12,7 +13,7 @@ async function getOrders(req, res, next) {
   const sortCriteria = req.query.sort;
   const limitResults = req.query.limit ? parseInt(req.query.limit) : null;
 
-  Db.findAllItems(Order, 'product', selectFields, queryCriteria, sortCriteria, limitResults)
+  DbOrder.findAllItems('product', selectFields, queryCriteria, sortCriteria, limitResults)
     .then(docs => {
       res.status(200).json({
         count: docs.length,
@@ -39,7 +40,7 @@ async function getOrders(req, res, next) {
 
 async function postOrder(req, res, next) {
 
-  Db.findItemById(Product, req.body.productId, null, null)
+  DbProduct.findItemById( req.body.productId, null, null)
     .then(product => {
       if (!product) {
         return res.status(404).json({
@@ -82,7 +83,7 @@ async function getOrder(req, res, next) {
   const id = req.params.orderId;
   const selectFields = req.query.fields;
 
-  Db.findItemById(Order, id, 'product', selectFields)
+  DbOrder.findItemById( id, 'product', selectFields)
     .then(order => {
       if (!order) {
         return res.status(404).json({
@@ -109,7 +110,7 @@ async function deleteOrder(req, res, next) {
 
   // Order.remove({ _id: req.params.orderId })
   //   .exec()
-   Db.deleteItem(Order, req.params.orderId)
+   DbOrder.deleteItem( req.params.orderId)
     .then(doc => {
       res.status(200).json({
         message: "Order deleted",
