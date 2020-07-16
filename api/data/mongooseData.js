@@ -1,20 +1,32 @@
 
+
 // save one item
 async function createItem(modelInstance) {
     return modelInstance
         .save()
 }
 
+
 // Update one item : updatedProperties = req.body in the router function
 async function updateItem(Model, updatedProperties, id) {
+
+	//do not allow updates on _id field!
+	if (updatedProperties["_id"]) {
+		delete updatedProperties["_id"];
+	}
+
     const updateOps = {};
     for (const key in updatedProperties) {
         updateOps[key] = updatedProperties[key];
     }
 
-    return Model.update({ _id: id }, { $set: updateOps })
+    // By default, findoneAndUpdate returns the document as it was BEFORE the update
+    // use option {returnOriginal: false} to return the updated document
+    return Model
+        .findOneAndUpdate({ _id: id }, { $set: updateOps }, { returnOriginal: false })
         .exec()
 }
+
 
 // delete one item
 async function deleteItem(Model, id) {
