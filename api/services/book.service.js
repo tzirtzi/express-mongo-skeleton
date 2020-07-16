@@ -5,7 +5,7 @@ const Book = require("../models/book");
 
 
 async function getBooks(req, res, next) {
-    
+
     const queryCriteria = req.query.queryCriteria ? JSON.parse(req.query.queryCriteria) : null;
     const selectFields = req.query.fields;
     const sortCriteria = req.query.sort;
@@ -74,11 +74,15 @@ async function updateBook(req, res, next) {
     const updatedProps = req.body;
 
     Db.updateItem(Book, updatedProps, id)
-        .then(result => {
-            res.status(200).json({
-                message: 'Product updated',
-                updated: result
-            });
+        .then(doc => {
+            if (doc) {
+                res.status(200).json({
+                    message: 'Product updated',
+                    updated: doc
+                });
+            } else {
+                res.status(404).json({ message: "No valid entry found for provided ID" });
+            }
         })
         .catch(err => {
             console.log(err);
@@ -94,10 +98,14 @@ async function deleteBook(req, res, next) {
 
     Db.deleteItem(Book, id)
         .then(doc => {
-            res.status(200).json({
-                message: 'Product deleted',
-                deleted: doc
-            });
+            if (doc) {
+                res.status(200).json({
+                    message: 'Product deleted',
+                    deleted: doc
+                });
+            } else {
+                res.status(404).json({ message: "No valid entry found for provided ID" });
+            }
         })
         .catch(err => {
             console.log(err);

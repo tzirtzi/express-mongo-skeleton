@@ -13,9 +13,6 @@ async function getOrders(req, res, next) {
   const limitResults = req.query.limit ? parseInt(req.query.limit) : null;
 
   Db.findAllItems(Order, 'product', selectFields, queryCriteria, sortCriteria, limitResults)
-    // .select("product quantity _id")
-    // .populate('product', 'name')
-    // .exec()
     .then(docs => {
       res.status(200).json({
         count: docs.length,
@@ -26,7 +23,7 @@ async function getOrders(req, res, next) {
             quantity: doc.quantity,
             request: {
               type: "GET",
-              url: "http://localhost:3000/api/orders/" + doc._id
+              url: `http://${req.headers.host}/api/orders/${doc._id}` 
             }
           };
         })
@@ -67,7 +64,7 @@ async function postOrder(req, res, next) {
         },
         request: {
           type: "GET",
-          url: "http://localhost:3000/api/orders/" + result._id
+          url: `http://${req.headers.host}/api/orders/${result._id}`
         }
       });
     })
@@ -96,7 +93,7 @@ async function getOrder(req, res, next) {
         order: order,
         request: {
           type: "GET",
-          url: "http://localhost:3000/api/orders"
+          url: `http://${req.headers.host}/api/orders`
         }
       });
     })
@@ -113,12 +110,13 @@ async function deleteOrder(req, res, next) {
   // Order.remove({ _id: req.params.orderId })
   //   .exec()
    Db.deleteItem(Order, req.params.orderId)
-    .then(result => {
+    .then(doc => {
       res.status(200).json({
         message: "Order deleted",
+        deleted: doc,
         request: {
           type: "POST",
-          url: "http://localhost:3000/api/orders",
+          url: `http://${req.headers.host}/api/orders`,
           body: { productId: "ID", quantity: "Number" }
         }
       });

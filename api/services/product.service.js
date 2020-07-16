@@ -23,7 +23,7 @@ async function getProducts(req, res, next) {
                         _id: doc._id,
                         request: {
                             type: "GET",
-                            url: "http://localhost:3000/api/products/" + doc._id
+                            url: `http://${req.headers.host}/api/products/${doc._id}`
                         }
                     };
                 })
@@ -57,7 +57,7 @@ async function getProduct(req, res, next) {
                     product: doc,
                     request: {
                         type: 'GET',
-                        url: 'http://localhost:3000/api/products'
+                        url: `http://${req.headers.host}/api/products`
                     }
                 });
             } else {
@@ -84,20 +84,16 @@ async function postProduct(req, res, next) {
     // product
     //     .save()
     Db.createItem(product)
-        .then(result => {
-            console.log(result);
+        .then(doc => {
+            console.log(doc);
             res.status(201).json({
                 message: "Created product successfully",
-                createdProduct: {
-                    name: result.name,
-                    price: result.price,
-                    _id: result._id,
-                    request: {
-                        type: 'GET',
-                        url: "http://localhost:3000/api/products/" + result._id
-                    }
+                created: doc,
+                request: {
+                    type: 'GET',
+                    url: `http://${req.headers.host}/api/products/${doc._id}`
                 }
-            });
+            })
         })
         .catch(err => {
             console.log(err);
@@ -113,12 +109,13 @@ async function updateProduct(req, res, next) {
     const updatedProps = req.body;
 
     Db.updateItem(Product, updatedProps, id)
-        .then(result => {
+        .then(doc => {
             res.status(200).json({
                 message: 'Product updated',
+                updated: doc,
                 request: {
                     type: 'GET',
-                    url: 'http://localhost:3000/api/products/' + id
+                    url: `http://${req.headers.host}/api/products/${id}`
                 }
             });
         })
@@ -134,15 +131,21 @@ async function updateProduct(req, res, next) {
 async function deleteProduct(req, res, next) {
     const id = req.params.productId;
     Db.deleteItem(Product, id)
-        .then(result => {
-            res.status(200).json({
-                message: 'Product deleted',
-                request: {
-                    type: 'POST',
-                    url: 'http://localhost:3000/api/products',
-                    body: { name: 'String', price: 'Number' }
-                }
-            });
+        .then(doc => {
+            if (doc) { //only if found it was deleted
+                res.status(200).json({
+                    message: 'Product deleted',
+                    deleted: doc,
+                    request: {
+                        type: 'POST',
+                        url: `http://${req.headers.host}/api/products`,
+                        body: { name: 'String', price: 'Number' }
+                    }
+                });
+            } else {
+                res.status(404)
+                    .json({ message: "No valid entry found for provided ID" });
+            }
         })
         .catch(err => {
             console.log(err);
