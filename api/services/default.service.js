@@ -7,27 +7,27 @@ function defaultService(Model, populateCollections) {
     
 
     function getAll(req, res, next) {
-        Controller.getAll(req, res, next, populateCollections);
+        Controller.getAll(req, res, next, null, populateCollections);
     }
     
     
     function getById(req, res, next) {
-        Controller.getById(req, res, next, populateCollections);
+        Controller.getById(req, res, next, null, populateCollections);
     }
     
     
     function postOne(req, res, next) {
-        Controller.postOne(req, res, next);
+        Controller.postOne(req, res, next, null);
     }
     
     
     function updateOne(req, res, next) {
-        Controller.updateOne(req, res, next);
+        Controller.updateOne(req, res, next, null);
     }
     
     
     function deleteOne(req, res, next) {
-        Controller.deleteOne(req, res, next);
+        Controller.deleteOne(req, res, next, null);
     }
     
     

@@ -20,14 +20,15 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/books",
+					"raw": "localhost:3000/api/books/v2",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"books"
+						"books",
+						"v2"
 					]
 				}
 			},
@@ -48,14 +49,15 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/books",
+					"raw": "localhost:3000/api/books/v1",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"books"
+						"books",
+						"v1"
 					]
 				}
 			},
@@ -67,7 +69,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/books/5f0f6c6e892f7609b9b640d7",
+					"raw": "localhost:3000/api/books/v2/5f11c29ef50a110b6b53952f",
 					"host": [
 						"localhost"
 					],
@@ -75,7 +77,8 @@
 					"path": [
 						"api",
 						"books",
-						"5f0f6c6e892f7609b9b640d7"
+						"v2",
+						"5f11c29ef50a110b6b53952f"
 					]
 				},
 				"description": "update id before running to an existing one...."
@@ -89,7 +92,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"read\": true\r\n}",
+					"raw": "{\r\n    \"_id\":\"5555555\",\r\n    \"read\": true,\r\n    \"title\": \"Art and emotions\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -97,7 +100,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/books/5f0f5ef68fce670459acf001",
+					"raw": "localhost:3000/api/books/v1/5f11c29af50a110b6b53952e",
 					"host": [
 						"localhost"
 					],
@@ -105,7 +108,8 @@
 					"path": [
 						"api",
 						"books",
-						"5f0f5ef68fce670459acf001"
+						"v1",
+						"5f11c29af50a110b6b53952e"
 					]
 				}
 			},
@@ -117,14 +121,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/books",
+					"raw": "localhost:3000/api/books/v2",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"books"
+						"books",
+						"v2"
 					]
 				}
 			},
@@ -136,14 +141,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/books?limit=1",
+					"raw": "localhost:3000/api/books/v2?limit=1",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"books"
+						"books",
+						"v2"
 					],
 					"query": [
 						{
@@ -161,14 +167,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/books?limit=2&fields=title genre",
+					"raw": "localhost:3000/api/books/v2?limit=2&fields=title genre",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"books"
+						"books",
+						"v2"
 					],
 					"query": [
 						{
@@ -190,14 +197,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/books?limit=2&fields=title genre&queryCriteria={\"title\":\"Art and Illusion\"}",
+					"raw": "localhost:3000/api/books/v2?limit=2&fields=title genre&queryCriteria={\"title\":\"Art and Illusion\"}",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"books"
+						"books",
+						"v2"
 					],
 					"query": [
 						{
@@ -223,7 +231,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/books/5f0f5ef68fce670459acf001?fields=title genre",
+					"raw": "localhost:3000/api/books/v2/5f11c29af50a110b6b53952e?fields=title genre",
 					"host": [
 						"localhost"
 					],
@@ -231,7 +239,8 @@
 					"path": [
 						"api",
 						"books",
-						"5f0f5ef68fce670459acf001"
+						"v2",
+						"5f11c29af50a110b6b53952e"
 					],
 					"query": [
 						{
@@ -336,7 +345,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/products/5f0f5e098fce670459acf000",
+					"raw": "http://localhost:3000/api/products/5f1209889c5f321d67e84645",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -345,7 +354,37 @@
 					"path": [
 						"api",
 						"products",
-						"5f0f5e098fce670459acf000"
+						"5f1209889c5f321d67e84645"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product ",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 22,\r\n    \"name\": \"prosfora -2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/products/5f1209d69c5f321d67e84646",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products",
+						"5f1209d69c5f321d67e84646"
 					]
 				}
 			},
@@ -404,7 +443,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"quantity\": 2,\r\n    \"productId\": \"5f0f5e098fce670459acf000\"\r\n}",
+					"raw": "{\r\n    \"quantity\": 2,\r\n    \"productId\": \"5f1209d69c5f321d67e84646\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -433,7 +472,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/orders/5f0f76e34bb9bd0e054a6ace",
+					"raw": "localhost:3000/api/orders/5f1209d69c5f321d67e84646",
 					"host": [
 						"localhost"
 					],
@@ -441,7 +480,7 @@
 					"path": [
 						"api",
 						"orders",
-						"5f0f76e34bb9bd0e054a6ace"
+						"5f1209d69c5f321d67e84646"
 					]
 				}
 			},
@@ -518,7 +557,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InR6aXJ0emlAbWFyYmJsLmNvbSIsInVzZXJJZCI6IjVmMGY1ZDYxNDM1ZmViMDNiNjQ2Zjk4OSIsImlhdCI6MTU5NDg0MjQ3NywiZXhwIjoxNTk0ODQ2MDc3fQ.cPClL1Wz6jP6hg2YWj6h8Kno38INHY3EYCaO817Wa84",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InR6aXJ0emlAbWFyYmJsLmNvbSIsInVzZXJJZCI6IjVmMTIwYWQ3OWM1ZjMyMWQ2N2U4NDY0YSIsImlhdCI6MTU5NTAxNzk0OSwiZXhwIjoxNTk1MDIxNTQ5fQ.Gyt8IatQ0VvAQSZaAL2NPd3o7b6rVjTt3YUMQ6Pig2M",
 						"type": "text"
 					}
 				],
@@ -582,30 +621,20 @@
 			"response": []
 		},
 		{
-			"name": "Update Product ",
+			"name": "Get Uploaded Image",
 			"request": {
-				"method": "PATCH",
+				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"price\": 22,\r\n    \"name\": \"prosfora -2\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "http://localhost:3000/api/products/5f0f5e098fce670459acf000",
-					"protocol": "http",
+					"raw": "localhost:3000/public/images/upload_34943a4aabe3fa79094db428bc5f1273.JPG",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"api",
-						"products",
-						"5f0f5e098fce670459acf000"
+						"public",
+						"images",
+						"upload_34943a4aabe3fa79094db428bc5f1273.JPG"
 					]
 				}
 			},

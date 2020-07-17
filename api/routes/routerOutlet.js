@@ -23,7 +23,7 @@ router.use('/api/upload', uploadRoutes);
 router.use('/api/user', userRoutes);
 router.use('/api/products', productRoutes);
 router.use('/api/orders', orderRoutes);
-router.use('/api/books/v1/', bookRoutes);
-router.use('/api/books/v2/', defaultBookRoutes);
+router.use('/api/books/v2/', bookRoutes);
+router.use('/api/books/v1/', defaultBookRoutes);
 
 module.exports = router;
