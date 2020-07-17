@@ -5,7 +5,7 @@ module.exports = (mongoose) => {
     const options =  { 
         useNewUrlParser: true, 
         useUnifiedTopology: true,
-        dbName:  process.env.MONGO_DB_NAME || 'test' 
+        dbName: process.env.NODE_ENV == 'test' ? 'test' : process.env.MONGO_DB_NAME || 'test' 
     };
     mongoose.Promise = global.Promise;
 
