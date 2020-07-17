@@ -16,7 +16,7 @@ function bookService(Book, populateCollections) {
     function getAll(req, res, next) {
 
         //resultFormatter need to be of similar to the controller function
-        const getAllHandler = function (DBCallPromise) {
+        const getAllRouterHandler = function (DBCallPromise) {
             DBCallPromise.then(docs => {
                 res.status(200).json({ count: docs.length, results: docs });
             })
@@ -28,7 +28,7 @@ function bookService(Book, populateCollections) {
                 });
         }
 
-        Controller.getAll(req, res, next, getAllHandler, populateCollections);
+        Controller.getAll(req, res, next, getAllRouterHandler, populateCollections);
     }
 
 
