@@ -6,7 +6,7 @@ const Product = require("../models/product");
 const DbOrder = require("../data/mongooseData")(Order);
 const DbProduct = require("../data/mongooseData")(Product);
 
-async function getOrders(req, res, next) {
+function getOrders(req, res, next) {
 
   const queryCriteria = req.query.queryCriteria ? JSON.parse(req.query.queryCriteria) : null;
   const selectFields = req.query.fields;
@@ -38,7 +38,7 @@ async function getOrders(req, res, next) {
 }
 
 
-async function postOrder(req, res, next) {
+function postOrder(req, res, next) {
 
   DbProduct.findItemById( req.body.productId, null, null)
     .then(product => {
@@ -78,7 +78,7 @@ async function postOrder(req, res, next) {
 }
 
 
-async function getOrder(req, res, next) {
+function getOrder(req, res, next) {
 
   const id = req.params.orderId;
   const selectFields = req.query.fields;
@@ -106,10 +106,8 @@ async function getOrder(req, res, next) {
 }
 
 
-async function deleteOrder(req, res, next) {
+function deleteOrder(req, res, next) {
 
-  // Order.remove({ _id: req.params.orderId })
-  //   .exec()
    DbOrder.deleteItem( req.params.orderId)
     .then(doc => {
       res.status(200).json({

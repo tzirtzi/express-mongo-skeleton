@@ -5,11 +5,12 @@ const {Book, Order, Product, User} = require('../models/index');
 const defaultRouter = require('./default.routes');
 
 const authGuard = require('../middleware/authGuard');
+const upload = require('../middleware/uploadFileFormidable');
 
 const statusRoutes = require('./status.routes');
 const uploadRoutes = require('./upload.routes');
 const userRoutes = require('./user.routes');
-const productRoutes = require('./product.routes');
+const productRoutes = require('./product.routes')(Product, upload);
 const orderRoutes = require('./order.routes');
 
 const bookRoutes = require('./book.routes')(Book, null);
@@ -19,8 +20,8 @@ const defaultBookRoutes = defaultRouter(Book, null, null);
 router.use('/api/protected', authGuard, statusRoutes);  // Protected Health endpoint
 router.use('/api', statusRoutes);   // Public Health endpoint
 router.use('/api/upload', uploadRoutes);
-
 router.use('/api/user', userRoutes);
+
 router.use('/api/products', productRoutes);
 router.use('/api/orders', orderRoutes);
 router.use('/api/books/v2/', bookRoutes);
