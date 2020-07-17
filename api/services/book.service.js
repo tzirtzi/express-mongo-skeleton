@@ -10,8 +10,8 @@ const Controller = require("../controllers/controller.service")(Db);
 // if we need an override in service level, that is dependent to specific Objects
 async function getBooks(req, res, next) {
 
-    const resultFormatter = function (Promise) {
-        Promise.then(docs => {
+    const resultFormatter = function (DBCallPromise) {
+        DBCallPromise.then(docs => {
                 res.status(200).json({count:docs.length, results: docs});
             })
             .catch(err => {

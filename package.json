@@ -1,6 +1,6 @@
 {
   "name": "thunder-rest",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "An opinionated framework for building APIs for React, Vue, Angular or other backends",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
