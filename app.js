@@ -9,7 +9,7 @@ const notFound = require('./api/middleware/notFound');
 const errorHandling = require('./api/middleware/errorHandling');
 
 const corsOptions = require('./api/middleware/corsOptions');
-const router = require('./api/routes/routerOutlet');
+const routerOutlet = require('./api/routes/routerOutlet');
 
 const app = express();
 const mongooseConnect = require('./api/data/mongooseConnect')(mongoose);
@@ -28,7 +28,7 @@ app.use(cors);
 app.options(corsOptions);
 
 // Routing 
-app.use('/', router);
+app.use('/', routerOutlet);
 
 // Not Found
 app.use(notFound);
