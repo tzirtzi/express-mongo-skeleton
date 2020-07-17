@@ -6,9 +6,23 @@ const Controller = require("../controllers/controller.service")(Db);
 
 
 // Here is the place to handle any specific overrides 
+// it would be nice if we could pass a function for handling the response and error 
+// if we need an override in service level, that is dependent to specific Objects
 async function getBooks(req, res, next) {
 
-    Controller.getAll(req, res, next, null);
+    const resultFormatter = function (Promise) {
+        Promise.then(docs => {
+                res.status(200).json({count:docs.length, results: docs});
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+    }
+
+    Controller.getAll(req, res, next, null, resultFormatter);
 
 }
 
@@ -16,19 +30,6 @@ async function getBooks(req, res, next) {
 async function getBook(req, res, next) {
 
     Controller.getById(req, res, next, null);
-    // const id = req.params.id;
-    // const selectFields = req.query.fields;
-
-    // Db.findItemById(id, null, selectFields)
-    //     .then(docs => {
-    //         res.status(200).json(docs);
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //         res.status(500).json({
-    //             error: err
-    //         });
-    //     });
 }
 
 
@@ -43,7 +44,7 @@ async function postBook(req, res, next) {
     });
 
     req.newItem = book;
-    
+
     Controller.postOne(req, res, next);
 }
 
@@ -55,7 +56,7 @@ async function updateBook(req, res, next) {
 
 
 async function deleteBook(req, res, next) {
-    
+
     Controller.deleteOne(req, res, next);
 }
 

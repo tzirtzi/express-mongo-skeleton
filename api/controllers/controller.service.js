@@ -3,24 +3,44 @@
 function Controller(Db, populateCollectionsController) {
 
 
-    async function getAll(req, res, next, populateCollectionsRouter) {
+    async function getAll(req, res, next, populateCollectionsRouter, routerHandler) {
+        
+        console.log(routerHandler);
 
         const populateCollections = req.query.populate || populateCollectionsRouter || populateCollectionsController || null;
         const queryCriteria = req.query.queryCriteria ? JSON.parse(req.query.queryCriteria) : null;
         const selectFields = req.query.fields;
         const sortCriteria = req.query.sort;
         const limitResults = req.query.limit ? parseInt(req.query.limit) : null;
-
-        Db.findAllItems(populateCollections, selectFields, queryCriteria, sortCriteria, limitResults)
-            .then(docs => {
-                res.status(200).json(docs);
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    error: err
+        
+        const controllerHandler = (promiseObject) => {
+            promiseObject
+                .then(docs => {
+                    res.status(200).json(docs);
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        error: err
+                    });
                 });
-            });
+        }
+
+        const promiseHandlerFunction = routerHandler || controllerHandler;
+
+        promiseHandlerFunction( 
+            Db.findAllItems(populateCollections, selectFields, queryCriteria, sortCriteria, limitResults)
+        );
+        // Db.findAllItems(populateCollections, selectFields, queryCriteria, sortCriteria, limitResults)
+        //     .then(docs => {
+        //         res.status(200).json(docs);
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //         res.status(500).json({
+        //             error: err
+        //         });
+        //     });
     }
 
 
