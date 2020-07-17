@@ -1,32 +1,41 @@
 const express = require("express");
 const router = express.Router();
 
-const bookService = require("../services/book.service");
+
+function bookRouter(Model, injectedService, populateCollections) {
+
+const bookService = require("../services/book.service")( Model, populateCollections );
+const defaultRouter = require("./default.routes")(Model, bookService, populateCollections)
+
+return defaultRouter;
+
+// The above code is equivalent to the below: 
+
+// router.get("/", (req, res, next) => {
+//   bookService.getAll(req, res, next);
+// });
 
 
-router.get("/", (req, res, next) => {
-  bookService.getBooks(req, res, next);
-});
+// router.get("/:id", (req, res, next) => {
+//   bookService.getById(req, res, next);
+// });
 
 
-router.get("/:id", (req, res, next) => {
-  bookService.getBook(req, res, next);
-});
+// router.post("/", (req, res, next) => {
+//   bookService.postOne(req, res, next);
+// });
 
 
-router.post("/", (req, res, next) => {
-  bookService.postBook(req, res, next);
-});
+// router.patch("/:id", (req, res, next) => {
+//   bookService.updateOne(req, res, next);
+// });
 
 
-router.patch("/:id", (req, res, next) => {
-  bookService.updateBook(req, res, next);
-});
+// router.delete("/:id", (req, res, next) => {
+//   bookService.deleteOne(req, res, next);
+// });
 
+//return router;
+}
 
-router.delete("/:id", (req, res, next) => {
-  bookService.deleteBook(req, res, next);
-});
-
-
-module.exports = router;
+module.exports = bookRouter;
