@@ -37,7 +37,7 @@ module.exports = upload;
 /**
  * TO USE 
  * 
- * const upload = require('../uploadFiles'); 
+ * const upload = require('../uploadFilesMulter'); 
  * ...
  * router.post("/", upload.single('productImage'), (req, res, next) => {
  *   const product = new Product({
