@@ -23,7 +23,7 @@ const bookRoutes = require('./book.routes')(Book, null);
 
 // you need no caching in the default routes module loading, otherwise you may get a singleton behavior 
 // which resoults all routes using the first parameterization loaded (in case you use multiple time default routes)
-const defaultBookRoutes = requireNoCache('./default.routes');(Book, null, null);
+const defaultBookRoutes = requireNoCache('./default.routes')(Book, null, null);
 
 // Here is the place to handle the routing per Object
 router.use('/api/protected', authGuard, statusRoutes);  // Protected Health endpoint
