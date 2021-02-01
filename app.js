@@ -6,7 +6,6 @@ const cors = require('cors'); // fully fledged package
 
 // middleware import
 const corsHeaders = require('./api/middleware/cors'); // custom implementation 
-// const corsOptions = require('./api/middleware/corsOptions'); // does not work for prefligh options
 
 const notFound = require('./api/middleware/notFound');
 const errorHandling = require('./api/middleware/errorHandling');
@@ -19,8 +18,17 @@ const mongooseConnect = require('./api/data/mongooseConnect')(mongoose);
 // const nocache = require('nocache')
 // app.use(nocache())  //This will (try to) abolish all client-side caching.
 
+// Middleware logging
+if (['dev', 'test', 'uat', 'development'].includes(process.env.ENVIRONMENT)) { 
+    app.use(logger('dev'));
+} /* else {
+    // create a write stream (in append mode)
+    var accessLogStream = fs.createWriteStream(__dirname + '/access.log',{flags: 'a'});
+    // setup the logger
+    app.use(morgan('combined', {stream: accessLogStream}))
+}*/
+
 // Middleware 
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/public', express.static(path.join(__dirname, 'public')) ); 
@@ -30,9 +38,6 @@ app.use(corsHeaders);
 
 // enable pre-flight across-the-board 
 app.options('*', cors())
-
-// Preflight request options
-// app.options(corsOptions);
 
 // Routing 
 app.use('/', routerOutlet);

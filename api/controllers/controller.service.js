@@ -10,11 +10,6 @@ function Controller(Db, populateCollectionsController) {
         const selectFields = req.query.fields;
         const sortCriteria = req.query.sort;
         const limitResults = req.query.limit ? parseInt(req.query.limit) : null;
-        const responseHandler = routerHandler || controllerHandler;
-
-        responseHandler(
-            Db.findAllItems(populateCollections, selectFields, queryCriteria, sortCriteria, limitResults)
-        );
 
         function controllerHandler(DBcallPromise) {
             DBcallPromise
@@ -28,20 +23,25 @@ function Controller(Db, populateCollectionsController) {
                     });
                 });
         }
-    }
-    /* The above code is similar to the following, only it allows to inject a function from router
-        That provides a different res handler for specific -route level cases */
-    // Db.findAllItems(populateCollections, selectFields, queryCriteria, sortCriteria, limitResults)
-    //     .then(docs => {
-    //         res.status(200).json(docs);
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //         res.status(500).json({
-    //             error: err
-    //         });
-    //     });
+        const responseHandler = routerHandler || controllerHandler;
 
+        responseHandler(
+            Db.findAllItems(populateCollections, selectFields, queryCriteria, sortCriteria, limitResults)
+        );
+
+        /* The above code is similar to the following, only it allows to inject a function from router
+            That provides a different res handler for specific -route level cases */
+        // Db.findAllItems(populateCollections, selectFields, queryCriteria, sortCriteria, limitResults)
+        //     .then(docs => {
+        //         res.status(200).json(docs);
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //         res.status(500).json({
+        //             error: err
+        //         });
+        //     });
+    }
 
 
     function getById(req, res, next, routerHandler, populateCollectionsRouter) {
@@ -49,11 +49,7 @@ function Controller(Db, populateCollectionsController) {
         const id = req.params.id;
         const populateCollections = req.query.populate || populateCollectionsRouter || populateCollectionsController || null;
         const selectFields = req.query.fields;
-        const responseHandler = routerHandler || controllerHandler;
 
-        responseHandler(
-            Db.findItemById(id, populateCollections, selectFields)
-        );
 
         function controllerHandler(DBcallPromise) {
             DBcallPromise
@@ -67,6 +63,11 @@ function Controller(Db, populateCollectionsController) {
                     });
                 });
         }
+        const responseHandler = routerHandler || controllerHandler;
+
+        responseHandler(
+            Db.findItemById(id, populateCollections, selectFields)
+        );
     }
 
 
@@ -81,12 +82,6 @@ function Controller(Db, populateCollectionsController) {
                 return Db.createItemFromProperties(req.body);
             }
         }
-
-        const responseHandler = routerHandler || controllerHandler;
-
-        responseHandler(
-            DbCreateItem()
-        );
 
         function controllerHandler(DBcallPromise) {
             DBcallPromise
@@ -104,7 +99,13 @@ function Controller(Db, populateCollectionsController) {
                     });
                 });
         }
+        const responseHandler = routerHandler || controllerHandler;
+
+        responseHandler(
+            DbCreateItem()
+        );
     }
+
 
     function updateOne(req, res, next, routerHandler) {
         const id = req.params.id;
@@ -114,11 +115,6 @@ function Controller(Db, populateCollectionsController) {
         if (updatedProps["_id"]) {
             delete updatedProps["_id"];
         }
-        const responseHandler = routerHandler || controllerHandler;
-
-        responseHandler(
-            Db.updateItem(updatedProps, id)
-        );
 
         function controllerHandler(DBcallPromise) {
             DBcallPromise
@@ -139,16 +135,15 @@ function Controller(Db, populateCollectionsController) {
                     });
                 });
         }
+        const responseHandler = routerHandler || controllerHandler;
 
+        responseHandler(
+            Db.updateItem(updatedProps, id)
+        );
     }
 
     function deleteOne(req, res, next, routerHandler) {
         const id = req.params.id;
-        const responseHandler = routerHandler || controllerHandler;
-
-        responseHandler(
-            Db.deleteItem(id)
-        );
 
         function controllerHandler(DBcallPromise) {
             DBcallPromise
@@ -169,6 +164,11 @@ function Controller(Db, populateCollectionsController) {
                     });
                 });
         }
+        const responseHandler = routerHandler || controllerHandler;
+
+        responseHandler(
+            Db.deleteItem(id)
+        );
     }
 
     return {

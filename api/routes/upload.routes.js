@@ -16,7 +16,7 @@ router.post('/', upload, (req, res) => {
 
 
 /** Serving upload form  only for test purposes */
-if (process.env.NODE_ENV = 'development') {
+if (process.env.ENVIRONMENT = 'dev') {
 
   router.get('/form', (req, res) => {
     res.send(`

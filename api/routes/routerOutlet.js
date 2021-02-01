@@ -22,7 +22,7 @@ const orderRoutes = require('./order.routes');
 const bookRoutes = require('./book.routes')(Book, null);
 
 // you need no caching in the default routes module loading, otherwise you may get a singleton behavior 
-// which resoults all routes using the first parameterization loaded (in case you use multiple time default routes)
+// which results all routes using the first parameterization loaded (in case you use multiple time default routes)
 const defaultBookRoutes = requireNoCache('./default.routes')(Book, null, null);
 
 // Here is the place to handle the routing per Object
@@ -31,11 +31,10 @@ router.use('/api', statusRoutes);   // Public Health endpoint
 router.use('/api/upload', uploadRoutes);
 router.use('/api/user', userRoutes);
 
-
 /// CUSTOM OBJECTS DECLARATION HERE ///////////////////////
 router.use('/api/products', productRoutes);
 router.use('/api/orders', orderRoutes);
-router.use('/api/books/v2/', bookRoutes);
 router.use('/api/books/v1/', defaultBookRoutes);
+router.use('/api/books/v2/', bookRoutes);
 
 module.exports = router;
